@@ -5,12 +5,12 @@ alphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯа
 
 def encrypt(path_key: str, kill_path: str, path: str) -> None:
     """
-    implements a cipher with a key and writes the data to a file
+    Implements a cipher with a key and writes the data to a file
 
-    Parameters
-        path_key: the path to the key file
-        text_path: path to the file where the message is located
-        path: the path where the cipher will be written
+    Parameters:
+    path_key: str - the path to the key file
+    kill_path: str - path to the file where the message is located
+    path: str - the path where the cipher will be written
     """
     key = read_json(path_key)
     result = ''
@@ -27,10 +27,10 @@ def decrypt(path_encryption: str, path_key: str, path_decryption: str) -> None:
     """
     Decrypts the text by the key
 
-    Parameters
-        path_key: the path to the key file
-        path_encryption: the path to the encrypted text file
-        path_decryption: the path to the file where the decrypted text will be written
+    Parameters:
+    path_encryption: str - the path to the encrypted text file
+    path_key: str - the path to the key file
+    path_decryption: str - the path to the file where the decrypted text will be written
     """
     key = read_json(path_key)
     result = ''
@@ -46,35 +46,31 @@ def decrypt(path_encryption: str, path_key: str, path_decryption: str) -> None:
     write_files(path_decryption, result)
 
 
-def key_json(key: str, path: str):
+def key_json(key: str, path: str) -> None:
     """
     Create a key to the text using the transpose method for a given key
     value and write it to a json file as a dictionary
 
-    Parameters
-        key: the values of the key that will be used to create a new one
-        path: the path where the key will be written
+    Parameters:
+    key: str - the values of the key that will be used to create a new one
+    path: str - the path where the key will be written
     """
-    sz = len(key)
-    key = dict()
-    num_rows = -(-len(alphabet) // sz)
-    matrix = [['' for _ in range(sz)] for _ in range(num_rows)]
+    keyword = key
 
-    index = 0
-    for row in range(num_rows):
-        for col in range(sz):
-            if index < len(alphabet):
-                matrix[row][col] = alphabet[index]
-                index += 1
+    keyword_set = set()
+    shifted_alphabet = ''
 
-    ciphertext = ''
-    for col in range(sz):
-        for row in range(num_rows):
-            ciphertext += matrix[row][col]
+    for letter in keyword:
+        if letter not in keyword_set:
+            keyword_set.add(letter)
+            shifted_alphabet += letter
 
-    for i, char in enumerate(alphabet):
-        key[char] = ciphertext[i]
-    write_json(key, path)
+    for letter in alphabet:
+        if letter not in keyword_set:
+            shifted_alphabet += letter
+
+    key_mapping = {alphabet[i]: shifted_alphabet[i] for i in range(len(alphabet))}
+    write_json(key_mapping, path)
 
 
 if __name__ == "__main__":
