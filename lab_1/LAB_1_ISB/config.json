@@ -1,0 +1,13 @@
+{
+    "decryption_path_task1": "1_task/decryption.txt",
+    "encryption_path_task1": "1_task/encryption.txt",
+    "key_path_task1": "1_task/key.json",
+    "keys_task1": "Моцарт",
+    "text_path_task1": "1_task/text_path.txt",
+
+    "text_path_task2": "2_task/text2.txt",
+    "standard_path_task2": "2_task/standard.json",
+    "freq_path_task2": "2_task/freq.json",
+    "key_path_task2": "2_task/key2.json",
+    "decryption_path_task2": "2_task/decryption2.txt"
+}
