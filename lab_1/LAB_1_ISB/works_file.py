@@ -15,9 +15,9 @@ def read_files(path: str) -> str:
             content = file.read()
         return content
     except FileNotFoundError:
-        print(f"The file was not found")
+        print(f"The file '{path}' was not found")
     except Exception as e:
-        print(f"An error occurred while reading the file: {str(e)}")
+        print(f"An error occurred while reading the file '{path}': {str(e)}")
 
 
 def write_files(path: str, data: str) -> None:
@@ -33,7 +33,7 @@ def write_files(path: str, data: str) -> None:
             file.write(data)
         print(f"The data has been successfully written to the file '{path}'.")
     except Exception as e:
-        print(f"An error occurred while writing the file: {str(e)}")
+        print(f"An error occurred while writing to the file '{path}': {str(e)}")
 
 
 def read_json(path: str) -> dict:
@@ -50,9 +50,9 @@ def read_json(path: str) -> dict:
             data = json.load(file)
         return data
     except FileNotFoundError:
-        print("The file was not found")
+        print(f"The JSON file '{path}' was not found")
     except Exception as e:
-        print(f"An error occurred while reading the JSON file: {str(e)}")
+        print(f"An error occurred while reading the JSON file '{path}': {str(e)}")
 
 
 def write_json(data: dict, path: str) -> None:
@@ -66,6 +66,6 @@ def write_json(data: dict, path: str) -> None:
     try:
         with open(path, "w", encoding="utf-8") as json_file:
             json.dump(data, json_file, ensure_ascii=False, indent=1)
-            print(f"The data has been successfully written to the file '{path}'.")
+            print(f"The data has been successfully written to the JSON file '{path}'.")
     except Exception as e:
-        print(f"Error writing to the file: '{e}'.")
+        print(f"An error occurred while writing to the JSON file '{path}': {str(e)}")
