@@ -1,10 +1,10 @@
 import java.security.SecureRandom;
 
-public class BinarySequenceGenerator {
+public class RandomBinarySequence {
     /**
      * Generates a random binary sequence and prints it to the console.
      */
-    public static void generateRandomBinarySequence() {
+    public static void RandomBinarySequence() {
 
         SecureRandom random = new SecureRandom();
 
@@ -20,6 +20,6 @@ public class BinarySequenceGenerator {
      * @param args Command-line arguments (not used)
      */
     public static void main(String[] args) {
-        generateRandomBinarySequence();
+       RandomBinarySequence();
     }
 }
