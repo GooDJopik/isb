@@ -39,14 +39,14 @@ def same_bits_test_nist(path: str, write: str, key: str) -> None:
     try:
         n = len(sequence.get(key))
         ones_count = sequence.get(key).count("1")
-        zita = ones_count / n
-        if abs(zita - 0.5) < (2 / math.sqrt(len(sequence.get(key)))):
+        proportion_of_ones = ones_count / n
+        if abs(proportion_of_ones - 0.5) < (2 / math.sqrt(len(sequence.get(key)))):
             v = 0
             for bit in range(len(sequence.get(key)) - 1):
                 if sequence.get(key)[bit] != sequence.get(key)[bit + 1]:
                     v += 1
-            numerator = abs(v - 2 * n * zita * (1 - zita))
-            denominator = 2 * math.sqrt(2 * n) * zita * (1 - zita)
+            numerator = abs(v - 2 * n * proportion_of_ones * (1 - proportion_of_ones))
+            denominator = 2 * math.sqrt(2 * n) * proportion_of_ones * (1 - proportion_of_ones)
             p_v = math.erfc(numerator / denominator)
         else:
             p_v = 0
@@ -85,7 +85,7 @@ def longest_run_ones_test_nist(path: str, write: str, key: str) -> None:
                 case _:
                     v[4] += 1
         xi_square = 0
-        for i in range(4):
+        for i in range(len(PI)):
             xi_square += pow(v[i + 1] - 16 * PI[i], 2) / (16 * PI[i])
         value = mpmath.gammainc(3 / 2, xi_square / 2)
         write_files(write, "Тест на самую длинную последовательность единиц в блоке " f'{key} : {value} \n')
