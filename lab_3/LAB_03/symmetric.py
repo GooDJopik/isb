@@ -12,20 +12,24 @@ class Symmetric:
         key: encryption key
     """
 
-    def __init__(self):
+    def __init__(self, key_length: int = 256):
+        self.key_length = key_length
         self.key = None
 
-    def generate_key(self, key_length: int = 16) -> bytes:
+    def generate_key(self, size_key: int) -> bytes:
         """
-        Generates a random encryption key.
+        Generate a symmetric encryption key.
 
         Parameters:
-            key_length: The length of the encryption key in bytes (16, 24, or 32 for 128, 192, or 256 bits).
+        size_key (int): The size of the key in bits (128, 192, or 256).
 
         Returns:
-            The generated encryption key.
+        bytes: The generated key.
         """
-        self.key = os.urandom(key_length)
+        if size_key not in [128, 192, 256]:
+            raise ValueError("Invalid key length. Please choose 128, 192, or 256 bits.")
+
+        self.key = os.urandom(size_key // 8)
         return self.key
 
     def key_deserialization(self, file_name: str) -> None:
@@ -74,8 +78,10 @@ class Symmetric:
         iv = os.urandom(16)
         cipher = Cipher(algorithms.AES(self.key), modes.CBC(iv))
         encryptor = cipher.encryptor()
-        padder = padding.ANSIX923(16).padder()
+
+        padder = padding.PKCS7(algorithms.AES.block_size).padder()
         padded_text = padder.update(text) + padder.finalize()
+
         cipher_text = iv + encryptor.update(padded_text) + encryptor.finalize()
         write_bytes_text(encrypted_path_text, cipher_text)
         return cipher_text
@@ -97,8 +103,10 @@ class Symmetric:
         cipher = Cipher(algorithms.AES(self.key), modes.CBC(iv))
         decryptor = cipher.decryptor()
         d_text = decryptor.update(cipher_text) + decryptor.finalize()
-        unpadder = padding.ANSIX923(16).unpadder()
+
+        unpadder = padding.PKCS7(algorithms.AES.block_size).unpadder()
         unpadded_dc_text = unpadder.update(d_text) + unpadder.finalize()
+
         d_text = unpadded_dc_text.decode('UTF-8')
         write_file(decrypted_path_text, d_text)
         return d_text
